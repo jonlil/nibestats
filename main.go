@@ -1,26 +1,26 @@
 package main
 
 import (
-  "github.com/gorilla/mux"
+  "github.com/jinzhu/gorm"
+  // Dialect import, not used directly
+  _ "github.com/jinzhu/gorm/dialects/sqlite"
   "log"
-  "net/http"
   "./nibestats"
 )
 
-
-// ?code={code}&state={state}
 func main() {
-  rtr := mux.NewRouter()
+  server := nibestats.NewServer()
 
-  // oauth routes
-  oauthRouter := rtr.PathPrefix("/oauth").Subrouter()
-  oauthRouter.Path("/callback").
-      Queries("code", "{code}", "state", "{state}").
-      HandlerFunc(nibestats.OAuthCallbackHandler)
-  oauthRouter.HandleFunc("/authorize", nibestats.RedirectToAuthenticationProviderHandler)
+  db, err := gorm.Open("sqlite3", "test.db")
+  if err != nil {
+    log.Println(err)
+    panic("failed connecting to database.")
+  }
+  defer db.Close()
 
-  http.Handle("/", rtr)
+  db.AutoMigrate(&nibestats.AuthorizationToken{})
 
-  log.Println("Listening...")
-  http.ListenAndServe(":3000", nil)
+  server.DB = db
+
+  server.Listen()
 }
