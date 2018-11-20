@@ -1,8 +1,11 @@
 package main
 
 import (
-  "./nibestats"
   "github.com/jinzhu/gorm"
+  // Dialect import, not used directly
+  _ "github.com/jinzhu/gorm/dialects/sqlite"
+  "log"
+  "./nibestats"
 )
 
 func main() {
@@ -10,8 +13,14 @@ func main() {
 
   db, err := gorm.Open("sqlite3", "test.db")
   if err != nil {
+    log.Println(err)
     panic("failed connecting to database.")
   }
-  server.DB = db
   defer db.Close()
+
+  db.AutoMigrate(&nibestats.AuthorizationToken{})
+
+  server.DB = db
+
+  server.Listen()
 }

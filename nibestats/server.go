@@ -16,10 +16,12 @@ type Server struct {
 
 // NewServer - initialize server instance
 func NewServer() *Server {
-  return &Server{
+  server := &Server{
     Nibe: NewNibeCredentials(),
     Router: mux.NewRouter(),
   }
+
+  return server
 }
 
 // Listen - Start listening on http
