@@ -21,6 +21,9 @@ func NewServer() *Server {
     Router: mux.NewRouter(),
   }
 
+  // Install routes
+  server.Routes()
+
   return server
 }
 
