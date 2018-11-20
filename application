@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+args_to_application=()
+for var in $(cat "${HOME}/.nibe"); do
+  args_to_application+=("${var}")
+done
+
+export ${args_to_application[@]}
+
+./server
