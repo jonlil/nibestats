@@ -1,13 +1,13 @@
 package nibestats
 
 import (
-	"fmt"
-	"net/http"
-	"net/url"
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"net/url"
 )
 
 // HandleRedirectToAuthenticationProvider - Method for redirecting page granting access to this application
@@ -31,12 +31,12 @@ func (s *Server) HandleOAuthCallback() http.HandlerFunc {
 		resp, _ := http.PostForm(
 			fmt.Sprintf("%s/oauth/token", s.Nibe.Endpoint),
 			url.Values{
-				"grant_type": {"authorization_code"},
-				"client_id": {s.Nibe.ClientID},
+				"grant_type":    {"authorization_code"},
+				"client_id":     {s.Nibe.ClientID},
 				"client_secret": {s.Nibe.ClientSecret},
-				"code": {params["code"]},
-				"scope": {"READSYSTEM"},
-				"redirect_uri": {s.Nibe.OAuhRedirectURI},
+				"code":          {params["code"]},
+				"scope":         {"READSYSTEM"},
+				"redirect_uri":  {s.Nibe.OAuhRedirectURI},
 			})
 		defer resp.Body.Close()
 
@@ -47,9 +47,9 @@ func (s *Server) HandleOAuthCallback() http.HandlerFunc {
 
 		tokenData := &AccessToken{}
 		err := json.Unmarshal(body, &tokenData)
-    if(err != nil){
-        fmt.Println("whoops:", err)
-    }
+		if err != nil {
+			fmt.Println("whoops:", err)
+		}
 		s.DB.Create(tokenData)
 
 		fmt.Println("response Status:", resp.Status)
