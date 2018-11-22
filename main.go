@@ -18,7 +18,7 @@ func main() {
   }
   defer db.Close()
 
-  db.AutoMigrate(&nibestats.AuthorizationToken{})
+  db.AutoMigrate(&nibestats.AccessToken{})
 
   server.DB = db
 
