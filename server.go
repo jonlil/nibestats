@@ -5,11 +5,12 @@ import (
 	"github.com/jinzhu/gorm"
 	"log"
 	"net/http"
+	"github.com/jonlil/nibe"
 )
 
 // Server type
 type Server struct {
-	Nibe   *NibeCredentials
+	Nibe   *nibe.Credentials
 	DB     *gorm.DB
 	Router *mux.Router
 }
@@ -17,7 +18,7 @@ type Server struct {
 // NewServer - initialize server instance
 func NewServer() *Server {
 	server := &Server{
-		Nibe:   NewNibeCredentials(),
+        Nibe:   nibe.NewCredentials("https://nibe.jl-media.se/oauth/callback"),
 		Router: mux.NewRouter(),
 	}
 
