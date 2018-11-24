@@ -21,14 +21,6 @@ func chainMiddleware(mw ...middleware) middleware {
 	}
 }
 
-func withSession(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		sess, _ := globalSessions.SessionStart(w, r)
-		defer sess.SessionRelease(w)
-		next.ServeHTTP(w, r)
-	}
-}
-
 func withLogging(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Logged connection from %s", r.RemoteAddr)

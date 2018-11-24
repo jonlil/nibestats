@@ -2,7 +2,7 @@ package main
 
 // Routes - Main routing table
 func (s *Server) Routes() {
-	mw := chainMiddleware(withSession, withLogging)
+	mw := chainMiddleware(withLogging)
 
 	oauthRouter := s.Router.PathPrefix("/oauth").Subrouter()
 	oauthRouter.Path("/callback").
