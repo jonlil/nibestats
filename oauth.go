@@ -56,18 +56,18 @@ func (s *Server) HandleOAuthCallback() http.HandlerFunc {
 			log.Fatal(readErr)
 		}
 
-		user := &models.User{
-			ID: sess.Get("UserID"),
-		}
 		tokenData := &models.AccessToken{}
 		err := json.Unmarshal(body, &tokenData)
 		if err != nil {
 			fmt.Println("whoops:", err)
-		}
-		tokenData.User = user
-		s.DB.Create(&tokenData)
+		} else {
+			user := &models.User{}
+			s.DB.First(&user, sess.Get("UserID"))
+			tokenData.User = *user
+			s.DB.Create(&tokenData)
 
-		fmt.Println("response Status:", resp.Status)
-		fmt.Println("response Headers:", resp.Header)
+			fmt.Println("response Status:", resp.Status)
+			fmt.Println("response Headers:", resp.Header)
+		}
 	}
 }
