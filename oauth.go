@@ -1,9 +1,10 @@
-package nibestats
+package main
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/jonlil/nibestats/models"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -45,7 +46,7 @@ func (s *Server) HandleOAuthCallback() http.HandlerFunc {
 			log.Fatal(readErr)
 		}
 
-		tokenData := &AccessToken{}
+		tokenData := &models.AccessToken{}
 		err := json.Unmarshal(body, &tokenData)
 		if err != nil {
 			fmt.Println("whoops:", err)

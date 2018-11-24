@@ -1,11 +1,11 @@
-package nibestats
+package main
 
 import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"github.com/jonlil/nibe"
 	"log"
 	"net/http"
-	"github.com/jonlil/nibe"
 )
 
 // Server type
@@ -18,7 +18,7 @@ type Server struct {
 // NewServer - initialize server instance
 func NewServer() *Server {
 	server := &Server{
-        Nibe:   nibe.NewCredentials("https://nibe.jl-media.se/oauth/callback"),
+		Nibe:   nibe.NewCredentials("https://nibe.jl-media.se/oauth/callback"),
 		Router: mux.NewRouter(),
 	}
 

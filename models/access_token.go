@@ -1,4 +1,4 @@
-package nibestats
+package models
 
 import (
 	"github.com/jinzhu/gorm"
@@ -12,4 +12,6 @@ type AccessToken struct {
 	RefreshToken string `json:"refresh_token"`
 	Scope        string `json:"scope"`
 	TokenType    string `json:"token_type"`
+	User				 User
+	UserID			 int64
 }
