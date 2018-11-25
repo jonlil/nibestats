@@ -7,4 +7,4 @@ done
 
 export ${args_to_application[@]}
 
-./server
+./app

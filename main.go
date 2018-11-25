@@ -1,11 +1,23 @@
-package nibestats
+package main
 
 import (
 	"github.com/jinzhu/gorm"
 	// Dialect import, not used directly
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/jonlil/nibestats/models"
+	"github.com/thedevsaddam/renderer"
 	"log"
 )
+
+var rnd *renderer.Render
+
+func init() {
+	opts := renderer.Options{
+		ParseGlobPattern: "./tpl/*.html",
+	}
+
+	rnd = renderer.New(opts)
+}
 
 func main() {
 	server := NewServer()
@@ -17,7 +29,8 @@ func main() {
 	}
 	defer db.Close()
 
-	db.AutoMigrate(&nibestats.AccessToken{})
+	db.AutoMigrate(&models.AccessToken{})
+	db.AutoMigrate(&models.User{}).AddUniqueIndex("idx_user_email", "email")
 	server.DB = db
 
 	server.Listen()
