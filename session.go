@@ -4,16 +4,16 @@ import (
 	"github.com/astaxie/beego/session"
 	// Dialect import, not used directly
 	_ "github.com/astaxie/beego/session/memcache"
-    "os"
+	"os"
 )
 
 var globalSessions *session.Manager
 
 func getEnv(key, fallback string) string {
-    if value, ok := os.LookupEnv(key); ok {
-        return value
-    }
-    return fallback
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }
 
 func init() {
