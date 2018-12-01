@@ -21,7 +21,7 @@ func main() {
 	db := database.Open()
 	defer db.Close()
 
-	db.AutoMigrate(&models.AccessToken{})
+	db.AutoMigrate(&models.AccessToken{}).AddUniqueIndex("idx_access_token_user_id", "user_id")
 	db.AutoMigrate(&models.User{}).AddUniqueIndex("idx_user_email", "email")
 	server.DB = db
 

@@ -1,10 +1,10 @@
 package database
 
-import(
+import (
 	"github.com/jinzhu/gorm"
 	// Dialect import, not used directly
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-    "log"
+	"log"
 )
 
 func Open() *gorm.DB {
@@ -13,5 +13,5 @@ func Open() *gorm.DB {
 		log.Println(err)
 		panic("failed connecting to database.")
 	}
-    return db
+	return db
 }
