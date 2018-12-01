@@ -39,21 +39,7 @@ func getUsers() []models.AccessToken {
 	return tokens
 }
 
-func main() {
-	db = database.Open()
-
-	c, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: utils.GetEnv("INFLUX_DB_HOST", "http://localhost:8086"),
-	})
-
-	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
-		Database:  "nibestats",
-		Precision: "m",
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-
+func run(c client.Client, bp client.BatchPoints) error {
 	for _, at := range getUsers() {
 		api := nibe.NewAPI(at.Token)
 		for _, system := range getSystems(api) {
@@ -78,6 +64,30 @@ func main() {
 	// Write the batch
 	if err := c.Write(bp); err != nil {
 		log.Fatal(err)
+	}
+
+	return nil
+}
+
+func main() {
+	db = database.Open()
+
+	c, _ := client.NewHTTPClient(client.HTTPConfig{
+		Addr: utils.GetEnv("INFLUX_DB_HOST", "http://localhost:8086"),
+	})
+
+	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
+		Database:  "nibestats",
+		Precision: "m",
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for {
+		time.Sleep(time.Duration(1) * time.Minute)
+		run(c, bp)
 	}
 
 	// Close client resources
