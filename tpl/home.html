@@ -9,12 +9,15 @@
     {{ template "navbar" }}
 
     <div class="container">
+    {{ if .user }}
+        <h3>Welcome {{ .user.Name }}</h3>
 
-      <div class="starter-template">
-        <h1>Home</h1>
-        <p class="lead">This is our <strong>HOME</strong> page</p>
-      </div>
-
+        {{ if .nibe_connection }}
+        <span class="info">Connection to Nibe has been made.</span>
+        {{ else }}
+        <a href="/oauth/authorize" class="btn">Allow application Nibe access</a>
+        {{ end }}
+    {{ end }}
     </div><!-- /.container -->
 
     {{ template "footer" }}
