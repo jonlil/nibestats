@@ -71,5 +71,7 @@ func (s *Server) HandleOAuthCallback() http.HandlerFunc {
 			fmt.Println("response Status:", resp.Status)
 			fmt.Println("response Headers:", resp.Header)
 		}
+
+		http.Redirect(w, r, "/", 302)
 	}
 }
