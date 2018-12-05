@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/jonlil/nibestats/models"
 	"net/http"
 )
