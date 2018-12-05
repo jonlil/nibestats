@@ -16,8 +16,10 @@ func (s *Server) HandleRedirectToAuthenticationProvider() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		sess, _ := globalSessions.SessionStart(w, r)
 		defer sess.SessionRelease(w)
+		userID := sess.Get("UserID")
+		log.Println(userID)
 
-		if sess.Get("UserId") == nil {
+		if userID == nil {
 			fmt.Println("Please sign in before using this.")
 		} else {
 			http.Redirect(w, r, fmt.Sprintf("%s/oauth/authorize?response_type=code&client_id=%s&scope=%s&redirect_uri=%s&state=%s",
@@ -69,5 +71,7 @@ func (s *Server) HandleOAuthCallback() http.HandlerFunc {
 			fmt.Println("response Status:", resp.Status)
 			fmt.Println("response Headers:", resp.Header)
 		}
+
+		http.Redirect(w, r, "/", 302)
 	}
 }

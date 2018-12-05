@@ -3,12 +3,14 @@ package models
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/jonlil/nibe-go"
+	"time"
 )
 
 // AccessToken -
-type AccessToken struct {
+type Parameter struct {
 	gorm.Model
-	nibe.AccessToken
-	User   User
-	UserID int64
+	nibe.Parameter
+	User     User
+	UserID   int64
+	Measured time.Time
 }

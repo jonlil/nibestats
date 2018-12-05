@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
-	"github.com/jonlil/nibe"
+	"github.com/jonlil/nibe-go"
 	"log"
 	"net/http"
 )

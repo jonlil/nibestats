@@ -1,0 +1,7 @@
+FROM resin/armv7hf-debian
+
+WORKDIR /bin
+COPY goapp .
+COPY tpl ./tpl
+
+ENTRYPOINT ["/bin/goapp"]
