@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+short-sha1() {
+  echo "${1:0:7}"
+}
+
+image-tag() {
+  echo "$(short-sha1 "${2}")"
+}
+
+log() {
+  echo "$@" >&2
+}
+
+DOCKERFILE="${DOCKERFILE:-Dockerfile.arm}"
+REGISTRY="registry.jl-media.se"
+IMAGE_NAME="nibestats"
+BUILD_VCS_NUMBER="${BUILD_VCS_NUMBER:-$(git rev-parse HEAD)}"
+IMAGE_TAG="${IMAGE_TAG:-$(image-tag "${BUILD_NUMBER}" "${BUILD_VCS_NUMBER}")}"
+IMAGE_UID="${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+
+echo "Building go application" >&2
+if ! go_build=$(go get -d ./... && go build -o goapp); then
+  log "Building go application failed"
+  log "${go_build}"
+  exit 1
+fi
+
+echo "Building docker image" >&2
+if ! docker_build=$(docker build \
+  -f "${DOCKERFILE}" \
+  -t "${IMAGE_UID}" \
+  .); then
+  log "Building docker image failed"
+  log "${docker_build}"
+  exit 1
+fi

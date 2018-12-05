@@ -27,6 +27,12 @@ func (s *Server) HandleSignup() http.HandlerFunc {
 	}
 }
 
+func renderBadCredentials(w http.ResponseWriter) {
+	rnd.HTML(w, 403, "login", map[string]interface{}{
+		"error": "Invalid credentials",
+	})
+}
+
 // HandleLogin -
 func (s *Server) HandleLogin() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -38,17 +44,16 @@ func (s *Server) HandleLogin() http.HandlerFunc {
 		} else {
 			r.ParseForm()
 
-			user := &models.User{
-				Email: r.FormValue("email"),
-			}
-
-			s.DB.First(&user)
-
-			if user.Authenticate([]byte(r.FormValue("password"))) {
-				sess.Set("UserID", user.ID)
-				http.Redirect(w, r, "/", 302)
+			user := &models.User{}
+			if s.DB.Where("email = ?", r.FormValue("email")).First(&user).RecordNotFound() {
+				renderBadCredentials(w)
 			} else {
-				fmt.Println("Invalid credentails")
+				if user.Authenticate([]byte(r.FormValue("password"))) {
+					sess.Set("UserID", user.ID)
+					http.Redirect(w, r, "/", 302)
+				} else {
+					renderBadCredentials(w)
+				}
 			}
 		}
 	}
