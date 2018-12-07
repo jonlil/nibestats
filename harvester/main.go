@@ -21,6 +21,11 @@ func fetchUserParameters(api *nibe.API, system *nibe.System) []nibe.Parameter {
 		"40004",
 		"40033",
 		"hot_water_temperature",
+		"40083", // EB100-BE3
+		"40081", // EB100-BE2
+		"40079", // EB100-BE1
+		"40025", // BT20
+		"40026", // BT21
 	})
 
 	return parameters
@@ -51,9 +56,14 @@ func run(c client.Client, bp client.BatchPoints) error {
 			}
 
 			fields := map[string]interface{}{
-				"indoor":    parameters[1].RawValue,
-				"outdoor":   parameters[0].RawValue,
-				"hot_water": parameters[2].RawValue,
+				"indoor":      parameters[1].RawValue,
+				"outdoor":     parameters[0].RawValue,
+				"hot_water":   parameters[2].RawValue,
+				"current_1":   parameters[3].RawValue,
+				"current_2":   parameters[4].RawValue,
+				"current_3":   parameters[5].RawValue,
+				"exhaust_air": parameters[6].RawValue,
+				"extract_air": parameters[7].RawValue,
 			}
 
 			pt, err := client.NewPoint("temperature", tags, fields, time.Now())
