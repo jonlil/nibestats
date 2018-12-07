@@ -49,7 +49,6 @@ func run(c client.Client, bp client.BatchPoints) error {
 	for _, at := range getUsers() {
 		api := nibe.NewAPI(at.Token)
 		for _, system := range getSystems(api) {
-			log.Println(at.UserID)
 			parameters := fetchUserParameters(api, &system)
 
 			tags := map[string]string{
