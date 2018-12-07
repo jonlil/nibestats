@@ -51,8 +51,10 @@ func run(c client.Client, bp client.BatchPoints) error {
 		for _, system := range getSystems(api) {
 			log.Println(at.UserID)
 			parameters := fetchUserParameters(api, &system)
+
 			tags := map[string]string{
-				"user": strconv.FormatInt(at.UserID, 10),
+				"user":   strconv.FormatInt(at.UserID, 10),
+				"system": strconv.Itoa(system.SystemID),
 			}
 
 			fields := map[string]interface{}{
@@ -73,6 +75,7 @@ func run(c client.Client, bp client.BatchPoints) error {
 			bp.AddPoint(pt)
 		}
 	}
+
 	// Write the batch
 	if err := c.Write(bp); err != nil {
 		log.Fatal(err)
