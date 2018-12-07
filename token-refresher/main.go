@@ -15,7 +15,7 @@ var (
 )
 
 func getTwentyMinutesAgo() time.Time {
-	return time.Now().Add(time.Duration(-5) * time.Minute)
+	return time.Now().Add(time.Duration(-20) * time.Minute)
 }
 
 func getRefreshTokens() []models.AccessToken {
